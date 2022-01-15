@@ -10,10 +10,24 @@ def y(yd):
     rbf = RBF.RBF(0.13,0.21,0.25,0.9,0.98)
 
     t = 1
-    yt_1 = 0.9
-    yt_2 = 1.1
-    yt_3 = 1.1
-    dt = 1/800
+    # Initial State 1
+    # yt_1 = 1.1
+    # yt_2 = 1.1
+    # yt_3 = 1.1
+
+    # Initial State 2 
+    # yt_1 = 3.23
+    # yt_2 = 0.32
+    # yt_3 = 0.23
+
+    # Initial State 3 
+    yt_1 = 0.4
+    yt_2 = 0.46
+    yt_3 = 0.42
+
+    initial_states = [ yt_1, yt_2 , yt_3]
+
+    dt = 1/400
 
     Ki = -0.07709546
     Kd = 0.58844546
@@ -51,7 +65,7 @@ def y(yd):
         y.append(yt_1)
         x.append(i*dt)
         
-    return y,x
+    return y,x,initial_states
 
 
 if __name__=="__main__":
@@ -59,17 +73,20 @@ if __name__=="__main__":
 
     yd = [2.1 for i in range(100) ] + [3.5 for i in range(100) ] + [2 for i in range(100) ] +  [3 for i in range(100) ]
 
-    yd+=yd 
-
 
     ## Generate Reference array here
 
-    y,x = y(yd)
+    y,x,i = y(yd)
 
     plt.plot(x,yd, label="Reference Signal")
     plt.plot(x,y,label ="Output")
 
+    plt.title( " Initial States y(t-1) , y(t-2) and y(t-3) are " + str(i[0]) + ", " + str(i[1]) +" and "+ str(i[2]) )
+
     plt.legend()
+
+    plt.ylabel(" Output from System ")
+    plt.xlabel("Time (s)")
 
 
     plt.show()

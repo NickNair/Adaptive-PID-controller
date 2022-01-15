@@ -1,11 +1,10 @@
 import numpy as np
-from numpy.lib.function_base import average
 
 class RBF:
 
     def __init__(self , aw , av , au , asig , gamma ,h = 3 ):
 
-        # TODO : Initialize all parameters
+        #  Initialize all parameters
 
         self.X = np.zeros((3,1))
         self.h = h
@@ -19,6 +18,7 @@ class RBF:
         self.w = np.zeros( (3, h) )
         self.v = np.zeros( (1, h) )
         self.output = np.zeros( (h,1) )
+        
         # Learning Rates
 
         self.aw = aw
@@ -80,7 +80,7 @@ class RBF:
             self.sigma[0][i] = self.sigma[0][i] + self.asig*del_TD*del_TD*v_prev[0][i]*self.output[i]*( np.linalg.norm(self.X- self.sigma[0][i]) )/self.sigma[0][i]**3
         
 
-        print(self.K)
+        # print(self.K)
 
 
 
