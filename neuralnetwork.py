@@ -32,6 +32,7 @@ class NeuralNetwork:
         # Description : Takes in the state vector at a given time step and computes the output vector for the next layer
 
         output = 1/(1 + np.exp(self.wh.dot(self.X)) )
+        
 
         
 

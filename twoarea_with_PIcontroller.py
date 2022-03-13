@@ -8,7 +8,8 @@ warnings.filterwarnings("ignore")
 
 from two_area import *
 
-import RBF
+import neuralnetwork
+
 
 def y(yd):
 
@@ -17,8 +18,8 @@ def y(yd):
 
     # rbf = RBF.RBF( aw = 0.000065, av = 0.022, au = 0.025 , asig = 0.01, gamma = 0.95)
     
-    nn1 = RBF.RBF( aw = 0.000065, av = 0.022, au = 0.025 , asig = 0.01, gamma = 0.95)
-    nn2 = RBF.RBF( aw = 0.000065, av = 0.022, au = 0.025 , asig = 0.01, gamma = 0.95)
+    nn1 = neuralnetwork.NeuralNetwork( aw = 0.000065, av = 0.022, au = 0.025 ,  gamma = 0.98)
+    nn2 = neuralnetwork.NeuralNetwork( aw = 0.000065, av = 0.022, au = 0.025 ,  gamma = 0.98)
 
     # av=0.021,au = 0.025, aw = 0.0003asig = 0.01 gamma = 0.9
 
@@ -57,22 +58,23 @@ def y(yd):
 
     initial_states = [ yt_1, yt_2 , yt_3 , yt_1_ , yt_2_ , yt_3_]
 
-    plot_data = {"ut1":[] , "pl1" : [] , "delF1":[] , 'KI1' : [], 'KP1' : [] , 'KD1' : [] , 
-                 "ut2":[] , "pl2" : [] , "delF2":[] , 'KI2' : [], 'KP2' : [] , 'KD2' : [] , "time" : []}
+    plot_data = {"ut1":[] , "pl1" : [] , "delF1":[] , "ut2":[] , "pl2" : [] , "delF2":[]  , "time" : []}
 
-
-    Ki = 0
-    Kd = 0
-    Kp = 0
-
-
-    nn1.K[0] = 13
-    nn1.K[1] = 1132
-    nn1.K[2] = 32
+    # KP1 = 1.32579169e-07
+    # KI1 = 3.09193550e-04
+    # KD1 = 1.91587817e-08
     
-    nn2.K[0] = 13
-    nn2.K[1] = 1132
-    nn2.K[2] = 32
+    # KP2 = 1.18316184e-07
+    # KI2 = 2.70082882e-04
+    # KD2 = 1.85194296e-08
+    
+    KP1 = -1.35204764e-06
+    KI1 = 4.30298026e-04
+    KD1 = -5.84913513e-07
+    
+    KP2 = -1.16255511e-06
+    KI2 = 2.09594022e-04
+    KD2 = -5.96951511e-07
 
 
     ut_1 = 0
@@ -91,23 +93,15 @@ def y(yd):
         del_y_a1 =  System.yt_1_a1 - System.yt_2_a1
         del2_y_a1 = System.yt_1_a1 - 2*System.yt_2_a1 + System.yt_3_a1
 
-        nn1.X[:,0] = [ e_t_a1 , -del_y_a1 ,  -del2_y_a1]
-        nn1.HiddenLayer()
-        nn1.OutputLayer()
-
         e_t_a2 = 0 - System.yt_1_a2
         del_y_a2 =  System.yt_1_a2 - System.yt_2_a2
         del2_y_a2 = System.yt_1_a2 - 2*System.yt_2_a2 + System.yt_3_a2
-
-        nn2.X[:,0] = [ e_t_a2 , -del_y_a2 ,  -del2_y_a2]
-        nn2.HiddenLayer()
-        nn2.OutputLayer()
         
         
         # ut_1 = ut_1 + 0.00043*e_t - 0.01*del_y - 0*del2_y
-        ut_1 = ut_1 + nn1.K[1]*e_t_a1 - nn1.K[0]*del_y_a1 - nn1.K[2]*del2_y_a1
+        ut_1 = ut_1 + KI1*e_t_a1 - KP1*del_y_a1 - KD1*del2_y_a1
 
-        ut_2 = ut_2 + nn2.K[1]*e_t_a2 - nn2.K[0]*del_y_a2 - nn2.K[2]*del2_y_a2
+        ut_2 = ut_2 + KI2*e_t_a2 - KP2*del_y_a2 - KD2*del2_y_a2
         
         
         plot_data["ut1"].append(ut_1)
@@ -194,32 +188,16 @@ def y(yd):
 
         System.Output(Ut)
 
-        # print(rbf.K)
-
-        nn1.Update(0 ,System.Y[0,0] ,System.yt_1_a1 , System.yt_2_a1, System.yt_3_a1 )
-        nn2.Update(0 ,System.Y[1,0] ,System.yt_1_a2 , System.yt_2_a2, System.yt_3_a2 )
-
 
         plot_data["delF1"].append(System.Y[0,0])
 
         plot_data["delF2"].append(System.Y[1,0])
-        
-        plot_data["KI1"].append(nn1.K[1])
-        plot_data["KP1"].append(nn1.K[0])
-        plot_data["KD1"].append(nn1.K[2])
-
-
-        plot_data["KI2"].append(nn2.K[1])
-        plot_data["KP2"].append(nn2.K[0])
-        plot_data["KD2"].append(nn2.K[2])
 
         plot_data["time"].append(i*dt)
 
-    print("Final Tuned Kp , Ki and Kd values for area 1 are :" , nn1.K)
 
     print("The steady state error of area 1 system is : ", System.Y[0][0])
 
-    print("Final Tuned Kp , Ki and Kd values for area 2 are :" , nn2.K)
 
     print("The steady state error of area 2 system is : ", System.Y[1][0])
         
@@ -296,55 +274,3 @@ if __name__=="__main__":
     plt.show()
 
 
-
-    plt.subplot(2,3,1)
-    plt.plot(plot_data["time"],plot_data["KI1"], label="KI")
-    plt.title( "KI vs Time")
-    plt.ylabel("KI")
-    plt.xlabel("Time (s)")
-    
-    plt.subplot(2,3,2)
-    plt.plot(plot_data["time"],plot_data["KP1"], label="KP")
-    plt.title( "KP vs Time")
-    plt.ylabel("KP ")
-    plt.xlabel("Time (s)")
-    
-    plt.subplot(2,3,3)
-    plt.plot(plot_data["time"],plot_data["KD1"], label="KD")
-    plt.title( "KD vs Time")
-    plt.ylabel("KD")
-    plt.xlabel("Time (s)")
-    
-
-
-    plt.title( " Initial States y(t-1) , y(t-2) and y(t-3) are " + str(i[0]) + ", " + str(i[1]) +" and "+ str(i[2]) )
-
-    plt.legend()
-
-    plt.subplot(2,3,4)
-    plt.plot(plot_data["time"],plot_data["KI2"], label="KI")
-    plt.title( "KI vs Time")
-    plt.ylabel("KI")
-    plt.xlabel("Time (s)")
-
-    
-    plt.subplot(2,3,5)
-    plt.plot(plot_data["time"],plot_data["KP2"], label="KP")
-    plt.title( "KP vs Time")
-    plt.ylabel("KP ")
-    plt.xlabel("Time (s)")
-
-    plt.subplot(2,3,6)
-    plt.plot(plot_data["time"],plot_data["KD2"], label="KD")
-    plt.title( "KD vs Time")
-    plt.ylabel("KD")
-    plt.xlabel("Time (s)")
-    
-    
-    
-
-    plt.ylabel(" Output from System ")
-    plt.xlabel("Time (s)")
-
-
-    plt.show()

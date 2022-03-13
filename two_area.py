@@ -5,11 +5,15 @@ import math
 
 class TwoAreaPS:
 
-    def __init__(self, Tg, Tp, Tt, Kp, T12, a12, R, T, beta1, beta2,  yt_1,yt_2,yt_3):
+    def __init__(self, Tg, Tp, Tt, Kp, T12, a12, R, T, beta1, beta2,  yt_1,yt_2,yt_3, yt_1_,yt_2_,yt_3_):
 
-        self.yt_1 = yt_1
-        self.yt_2 = yt_2
-        self.yt_3 = yt_3
+        self.yt_1_a1 = yt_1
+        self.yt_2_a1 = yt_2
+        self.yt_3_a1 = yt_3
+
+        self.yt_1_a2 = yt_1_
+        self.yt_2_a2 = yt_2_
+        self.yt_3_a2 = yt_3_
 
         self.Xprev = np.zeros( (7,1) )
         self.Y = np.zeros( (2,1) )
@@ -57,8 +61,9 @@ class TwoAreaPS:
                              [0,0,0,0],
                              [0,1/Tg,0,-Kp/Tp]  ])
 
-        self.C = np.array( [ [ self.beta1 , 0 , 0 ,1 , 0, 0 , 0 ] ])
-                            #  [ 0 , 0, 0, 1, self.beta2, 0, 0 ] ] )
+        self.C = np.array( [ [ self.beta1 , 0 , 0 ,1 , 0, 0 , 0 ] ,
+                              [ 0 , 0, 0, 1, self.beta2, 0, 0 ] ,
+                              [ 0 , 0, 0, 1, 0, 0, 0 ] ] )
 
 
         # Calculating Discrete Coefs 
@@ -71,13 +76,12 @@ class TwoAreaPS:
 
     def Output(self,Ut):
 
-        self.yt_1 , self.yt_2 , self.yt_3  = self.Y[0,0], self.yt_1, self.yt_2
+        self.yt_1_a1 , self.yt_2_a1 , self.yt_3_a1  = self.Y[0,0], self.yt_1_a1, self.yt_2_a1
+        self.yt_1_a2 , self.yt_2_a2 , self.yt_3_a2  = self.Y[1,0], self.yt_1_a2, self.yt_2_a2
 
         self.X = np.dot( self.Ad, self.Xprev )  + np.dot( self.Bd, Ut )
 
         self.Y = np.dot( self.C,  self.Xprev) 
-
-        # print("Chooth :" , self.Y)
 
         self.Xprev = self.X
 

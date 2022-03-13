@@ -8,7 +8,8 @@ warnings.filterwarnings("ignore")
 
 from two_area import *
 
-import RBF
+import neuralnetwork
+
 
 def y(yd):
 
@@ -17,8 +18,8 @@ def y(yd):
 
     # rbf = RBF.RBF( aw = 0.000065, av = 0.022, au = 0.025 , asig = 0.01, gamma = 0.95)
     
-    nn1 = RBF.RBF( aw = 0.000065, av = 0.022, au = 0.025 , asig = 0.01, gamma = 0.95)
-    nn2 = RBF.RBF( aw = 0.000065, av = 0.022, au = 0.025 , asig = 0.01, gamma = 0.95)
+    nn1 = neuralnetwork.NeuralNetwork( aw = 0.000065, av = 0.022, au = 0.025 ,  gamma = 0.98)
+    nn2 = neuralnetwork.NeuralNetwork( aw = 0.000065, av = 0.022, au = 0.025 ,  gamma = 0.98)
 
     # av=0.021,au = 0.025, aw = 0.0003asig = 0.01 gamma = 0.9
 
@@ -58,7 +59,7 @@ def y(yd):
     initial_states = [ yt_1, yt_2 , yt_3 , yt_1_ , yt_2_ , yt_3_]
 
     plot_data = {"ut1":[] , "pl1" : [] , "delF1":[] , 'KI1' : [], 'KP1' : [] , 'KD1' : [] , 
-                 "ut2":[] , "pl2" : [] , "delF2":[] , 'KI2' : [], 'KP2' : [] , 'KD2' : [] , "time" : []}
+                 "ut2":[] , "pl2" : [] , "delF2":[] , 'KI2' : [], 'KP2' : [] , 'KD2' : [] , 'Tie Line' : [ ] ,"time" : []}
 
 
     Ki = 0
@@ -168,23 +169,23 @@ def y(yd):
 
         # Load Graph 5
 
-        if(  (i*dt)%10==0 and (i*dt)!=0 ):
-            PL1 = np.random.normal(0.5,0.1)
-            PL2 = np.random.normal(0.5,0.1)
+        # if(  (i*dt)%10==0 and (i*dt)!=0 ):
+        #     PL1 = np.random.normal(0.5,0.1)
+        #     PL2 = np.random.normal(0.5,0.1)
 
         # Load Graph 6
 
-        # if ( i*dt > 50 and  i*dt <130):
-        #     PL1 = 0.5
+        if ( i*dt > 50 and  i*dt <130):
+            PL1 = 0.5
 
-        # else:
-        #     PL1 = 0
+        else:
+            PL1 = 0
 
-        # if ( i*dt > 20 and  i*dt <70):
-        #     PL2 = 0.5
+        if ( i*dt > 20 and  i*dt <70):
+            PL2 = 0.5
 
-        # else:
-        #     PL2 = 0 
+        else:
+            PL2 = 0 
         
 
         plot_data["pl1"].append(PL1)
@@ -214,6 +215,8 @@ def y(yd):
         plot_data["KD2"].append(nn2.K[2])
 
         plot_data["time"].append(i*dt)
+
+        plot_data["Tie Line"].append(System.Y[2,0])
 
     print("Final Tuned Kp , Ki and Kd values for area 1 are :" , nn1.K)
 
@@ -344,6 +347,14 @@ if __name__=="__main__":
     
 
     plt.ylabel(" Output from System ")
+    plt.xlabel("Time (s)")
+
+
+    plt.show()
+
+    plt.plot(plot_data["time"],plot_data["Tie Line"])
+    plt.title( "Tie Line vs Time")
+    plt.ylabel("Tie Line")
     plt.xlabel("Time (s)")
 
 
