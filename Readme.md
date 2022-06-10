@@ -7,3 +7,5 @@ Automatic Generation Control (AGC) is critical for providing quality electrical 
 * To run the Python Implementation of the adaptive controller run ![twoarea_with_adaptive_pid.py](https://github.com/NickNair/Adaptive-PID-controller/blob/master/python_implementation/twoarea_with_adaptive_pid.py)
 * To run the Matlab Implementation of the adaptive controller run ![main.m](https://github.com/NickNair/Adaptive-PID-controller/blob/master/matlab_implementation/main.m)
 
+The report can be found ![here](https://github.com/NickNair/Adaptive-PID-controller/blob/master/Report%20-%20Adaptive%20PID%20Controller.pdf)
+
