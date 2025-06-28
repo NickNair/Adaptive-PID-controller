@@ -11,7 +11,7 @@ The report can be found ![here](https://github.com/NickNair/Adaptive-PID-control
 
 ## Publications
 
-- [*] R. Muduli, N. Nair, S. Kulkarni, M. Singhal, D. Jena, and T. Moger,  
+- R. Muduli, N. Nair, S. Kulkarni, M. Singhal, D. Jena, and T. Moger,  
   "**Load Frequency Control of Two-Area Power System Using an Actor-Critic Reinforcement Learning Method-Based Adaptive PID Controller**,"  
   *2023 IEEE 3rd International Conference on Sustainable Energy and Future Electric Transportation (SEFET)*,  
   Bhubaneswar, India, 2023, pp. 1–6.  
