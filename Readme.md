@@ -9,5 +9,10 @@ Automatic Generation Control (AGC) is critical for providing quality electrical 
 
 The report can be found ![here](https://github.com/NickNair/Adaptive-PID-controller/blob/master/Report%20-%20Adaptive%20PID%20Controller.pdf)
 
-# Publications 
-[*] R. Muduli, N. Nair, S. Kulkarni, M. Singhal, D. Jena and T. Moger, "Load Frequency Control of Two-area Power System Using an Actor-Critic Reinforcement Learning Method-based Adaptive PID Controller," 2023 IEEE 3rd International Conference on Sustainable Energy and Future Electric Transportation (SEFET), Bhubaneswar, India, 2023, pp. 1-6, doi: 10.1109/SeFeT57834.2023.10245225. 
+## Publications
+
+- [*] R. Muduli, N. Nair, S. Kulkarni, M. Singhal, D. Jena, and T. Moger,  
+  "**Load Frequency Control of Two-Area Power System Using an Actor-Critic Reinforcement Learning Method-Based Adaptive PID Controller**,"  
+  *2023 IEEE 3rd International Conference on Sustainable Energy and Future Electric Transportation (SEFET)*,  
+  Bhubaneswar, India, 2023, pp. 1–6.  
+  [DOI: 10.1109/SeFeT57834.2023.10245225](https://doi.org/10.1109/SeFeT57834.2023.10245225)
